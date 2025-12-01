@@ -39,11 +39,42 @@
             <p class="profile__description">Исследователь океана</p>
           </div>
           <button
-            class="profile__add-button"
+            class="profile__add-element-button"
             type="button"
             aria-label="Добавить фото"
           ></button>
         </section>
+
+        <!-- Popup Section -->
+        <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <button class="close-btn" id="closePopup">×</button>
+            
+            <h2 class="popup-title">Новое место</h2>
+            
+            <form id="newPlaceForm">
+                <div class="form-group">
+                    <label class="form-label" for="placeName">Название</label>
+                    <input type="text" id="placeName" class="form-input" placeholder="Введите название места" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="imageUrl">Ссылка на картинку</label>
+                    <input type="url" id="imageUrl" class="form-input" placeholder="https://example.com/image.jpg" required>
+                    <div class="image-preview" id="imagePreview">
+                        <p>Предпросмотр изображения:</p>
+                        <img id="previewImage" src="" alt="Предпросмотр">
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Создать</button>
+                
+                <div class="loading" id="loadingIndicator">
+                    <p>Отправка данных...</p>
+                </div>
+            </form>
+        </div>
+    </div>
 
         <!-- Cards Grid -->
         <section class="elements">
@@ -82,7 +113,7 @@
             <div class="element__footer">
               <h2 class="element__title">Гора Эльбрус</h2>
               <button
-                class="element__like element__like_active"
+                class="element__like"
                 type="button"
                 aria-label="Нравится"
               ></button>
@@ -180,5 +211,6 @@
         <p class="footer__copyright">© 2020 Mesto Russia</p>
       </footer>
     </div>
+    <script src="./script.js"></script>
   </body>
 </html>
