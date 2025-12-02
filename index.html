@@ -11,13 +11,7 @@
     <div class="page">
       <!-- Header -->
       <header class="header">
-
-        <img
-            src="./images/logo.png"
-            alt="Логотип сайта"
-            class="header__logo"
-          />
-        </svg>
+        <img src="./images/logo.png" alt="Логотип сайта" class="header__logo" />
         <div class="header__line"></div>
       </header>
 
@@ -47,38 +41,48 @@
 
         <!-- Popup Section -->
         <div class="popup-overlay" id="popupOverlay">
-        <div class="popup">
+          <div class="popup">
             <button class="close-btn" id="closePopup">×</button>
-            
+
             <h2 class="popup-title">Новое место</h2>
-            
+
             <form id="newPlaceForm">
-                <div class="form-group">
-                    <label class="form-label" for="placeName">Название</label>
-                    <input type="text" id="placeName" class="form-input" placeholder="Введите название места" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="imageUrl">Ссылка на картинку</label>
-                    <input type="url" id="imageUrl" class="form-input" placeholder="https://example.com/image.jpg" required>
-                    <div class="image-preview" id="imagePreview">
-                        <p>Предпросмотр изображения:</p>
-                        <img id="previewImage" src="" alt="Предпросмотр">
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">Создать</button>
-                
-                <div class="loading" id="loadingIndicator">
-                    <p>Отправка данных...</p>
-                </div>
+              <div class="form-group">
+                <label class="form-label" for="placeName">Название</label>
+                <input
+                  type="text"
+                  id="placeName"
+                  class="form-input placeName"
+                  placeholder="Введите название места"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="imageUrl"
+                  >Ссылка на картинку</label
+                >
+                <input
+                  type="url"
+                  id="imageUrl"
+                  class="form-input imageUrl"
+                  placeholder="https://example.com/image.jpg"
+                  required
+                />
+              </div>
+
+              <button type="submit" class="submit-btn">Создать</button>
+
+              <div class="loading" id="loadingIndicator">
+                <p>Отправка данных...</p>
+              </div>
             </form>
+          </div>
         </div>
-    </div>
 
         <!-- Cards Grid -->
-        <section class="elements">
-          <article class="element">
+        <section class="elements-container">
+          <!-- <article class="element">
             <img
               src="./images/karachaevsk.jpg"
               alt="Карачаевск"
@@ -147,6 +151,7 @@
               alt="Гора Эльбрус"
               class="element__image"
             />
+
             <button
               class="element__trash"
               type="button"
@@ -202,7 +207,7 @@
                 aria-label="Нравится"
               ></button>
             </div>
-          </article>
+          </article> -->
         </section>
       </main>
 
@@ -211,6 +216,26 @@
         <p class="footer__copyright">© 2020 Mesto Russia</p>
       </footer>
     </div>
+
+    <template id="element-template">
+      <article class="element">
+        <img src="" alt="" class="element__image" />
+        <button
+          class="element__trash"
+          type="button"
+          aria-label="Удалить"
+        ></button>
+        <div class="element__footer">
+          <h3 class="element__title"></h3>
+          <button
+            class="element__like"
+            type="button"
+            aria-label="Нравится"
+          ></button>
+        </div>
+      </article>
+    </template>
+
     <script src="./script.js"></script>
   </body>
 </html>
