@@ -23,7 +23,7 @@ function deleteCard(cardElement) {
     cardElement.remove();
 }
 
-function addCard(linkPicture, namePicture) {
+function createCard(linkPicture, namePicture) {
     const cardTemplate = document.querySelector('#element-template');
     const cardElement = cardTemplate.content.querySelector('.element').cloneNode(true);
 
@@ -46,6 +46,19 @@ function addCard(linkPicture, namePicture) {
 }
 
 
+function addCard() {
+    const namePicture = popupOverlay.querySelector('.placeName');
+    const linkPicture = popupOverlay.querySelector('.imageUrl');
+
+    createCard(linkPicture.value, namePicture.value);
+
+    linkPicture.value = ''; 
+    namePicture.value = '';
+
+    closePopup();
+}
+
+
 
 
 
@@ -62,16 +75,7 @@ popupOverlay.addEventListener('click', function (evt) {
     }
 
     if(evt.target === submitButton){
-        
-        const namePicture = popupOverlay.querySelector('.placeName');
-        const linkPicture = popupOverlay.querySelector('.imageUrl');
-
-        addCard(linkPicture.value, namePicture.value);
-
-        linkPicture.value = ''; 
-        namePicture.value = '';
-
-        closePopup();
+        addCard();
     }
 })
 
