@@ -40,8 +40,10 @@
         </section>
 
         <!-- Popup Section -->
-        <div class="popup-overlay" id="popupOverlay">
-          <div class="popup">
+
+        <!-- Popup Card -->
+        <div class="popup-overlay" id="popupOverlayCard">
+          <div class="popup-card">
             <button class="close-btn" id="closePopup">×</button>
 
             <h2 class="popup-title">Новое место</h2>
@@ -80,135 +82,28 @@
           </div>
         </div>
 
+        <!-- Popup Picture -->
+        <div class="popup-overlay" id="popupOverlayImage">
+          <div class="popup-images">
+            <button class="close-btn">×</button>
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+                alt="Пример изображения"
+                class="popup-image"
+                id="popupImage"
+              />
+            </div>
+
+            <div class="image-caption" id="imageCaption">
+              Красивый пейзаж с горами и озером. Идеальное место для отдыха и
+              вдохновения.
+            </div>
+          </div>
+        </div>
+
         <!-- Cards Grid -->
-        <section class="elements-container">
-          <!-- <article class="element">
-            <img
-              src="./images/karachaevsk.jpg"
-              alt="Карачаевск"
-              class="element__image"
-            />
-            <button
-              class="element__trash"
-              type="button"
-              aria-label="Удалить"
-            ></button>
-            <div class="element__footer">
-              <h2 class="element__title">Карачаевск</h2>
-              <button
-                class="element__like"
-                type="button"
-                aria-label="Нравится"
-              ></button>
-            </div>
-          </article>
-
-          <article class="element">
-            <img
-              src="./images/elbrus.jpg"
-              alt="Гора Эльбрус"
-              class="element__image"
-            />
-            <button
-              class="element__trash"
-              type="button"
-              aria-label="Удалить"
-            ></button>
-            <div class="element__footer">
-              <h2 class="element__title">Гора Эльбрус</h2>
-              <button
-                class="element__like"
-                type="button"
-                aria-label="Нравится"
-              ></button>
-            </div>
-          </article>
-
-          <article class="element">
-            <img
-              src="./images/dombai.jpg"
-              alt="Домбай"
-              class="element__image"
-            />
-            <button
-              class="element__trash"
-              type="button"
-              aria-label="Удалить"
-            ></button>
-            <div class="element__footer">
-              <h2 class="element__title">Домбай</h2>
-              <button
-                class="element__like"
-                type="button"
-                aria-label="Нравится"
-              ></button>
-            </div>
-          </article>
-
-          <article class="element">
-            <img
-              src="./images/elbrus.jpg"
-              alt="Гора Эльбрус"
-              class="element__image"
-            />
-
-            <button
-              class="element__trash"
-              type="button"
-              aria-label="Удалить"
-            ></button>
-            <div class="element__footer">
-              <h2 class="element__title">Гора Эльбрус</h2>
-              <button
-                class="element__like"
-                type="button"
-                aria-label="Нравится"
-              ></button>
-            </div>
-          </article>
-
-          <article class="element">
-            <img
-              src="./images/dombai.jpg"
-              alt="Домбай"
-              class="element__image"
-            />
-            <button
-              class="element__trash"
-              type="button"
-              aria-label="Удалить"
-            ></button>
-            <div class="element__footer">
-              <h2 class="element__title">Домбай</h2>
-              <button
-                class="element__like"
-                type="button"
-                aria-label="Нравится"
-              ></button>
-            </div>
-          </article>
-
-          <article class="element">
-            <img
-              src="./images/karachaevsk.jpg"
-              alt="Карачаево-Черкесия"
-              class="element__image"
-            />
-            <button
-              class="element__trash"
-              type="button"
-              aria-label="Удалить"
-            ></button>
-            <div class="element__footer">
-              <h2 class="element__title">Карачаево-Ч...</h2>
-              <button
-                class="element__like"
-                type="button"
-                aria-label="Нравится"
-              ></button>
-            </div>
-          </article> -->
-        </section>
+        <section class="elements-container"></section>
       </main>
 
       <!-- Footer -->

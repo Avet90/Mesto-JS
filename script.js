@@ -3,24 +3,49 @@ const elementsContainer = content.querySelector('.elements-container');
 
 const addButton = content.querySelector('.profile__add-element-button');
 
-const popupOverlay = content.querySelector('.popup-overlay');
-const submitButton = popupOverlay.querySelector('.submit-btn');
+const overlayCard = content.querySelector('#popupOverlayCard');
+const submitButton = overlayCard.querySelector('.submit-btn');
 
-const closeButton = popupOverlay.querySelector('.close-btn')
+const overlayImage = content.querySelector('#popupOverlayImage');
+
+
+const closeButton = content.querySelector('.close-btn');
 
 
 // Functions
 
-function openPopup() {
-    popupOverlay.classList.add('active');
+function openPopup(overlay) {
+    overlay.classList.add('active');
 }
 
-function closePopup() {
-    popupOverlay.classList.remove('active');
+function closePopup(overlay) {
+    overlay.classList.remove('active');
 }
 
 function deleteCard(cardElement) {
     cardElement.remove();
+}
+
+function passOverlayFromCard(card) {
+
+    const namePicture = card.querySelector('.element__title').textContent;
+    const linkPicture = card.querySelector('.element__image').src;
+    
+    overlayImage.querySelector('.image-caption').textContent = namePicture;
+    overlayImage.querySelector('.popup-image').src = linkPicture;
+    overlayImage.querySelector('.popup-image').alt = namePicture;
+
+    overlayImage.addEventListener('click', function (evt) {
+        if (evt.target === overlayImage) {
+        closePopup(overlayImage);
+        }
+
+        if (evt.target.classList.contains('close-btn')) {
+        closePopup(overlayImage);
+    }
+    })
+    
+    openPopup(overlayImage);
 }
 
 function createCard(linkPicture, namePicture) {
@@ -42,20 +67,24 @@ function createCard(linkPicture, namePicture) {
         deleteCard(cardElement);
     })
 
+    cardElement.querySelector('.element__image').addEventListener('click', function(evt){
+        passOverlayFromCard(cardElement)
+    })
+
     elementsContainer.append(cardElement);
 }
 
 
 function addCard() {
-    const namePicture = popupOverlay.querySelector('.placeName');
-    const linkPicture = popupOverlay.querySelector('.imageUrl');
+    const namePicture = overlayCard.querySelector('.placeName');
+    const linkPicture = overlayCard.querySelector('.imageUrl');
 
     createCard(linkPicture.value, namePicture.value);
 
     linkPicture.value = ''; 
     namePicture.value = '';
 
-    closePopup();
+    closePopup(overlayCard);
 }
 
 
@@ -64,14 +93,18 @@ function addCard() {
 
 // EventListeners
 
-addButton.addEventListener('click', openPopup)
+addButton.addEventListener('click', () => openPopup(overlayCard))
 
-closeButton.addEventListener('click', closePopup)
+// closeButton.addEventListener('click', () => closePopup())
 
-popupOverlay.addEventListener('click', function (evt) {
+overlayCard.addEventListener('click', function (evt) {
 
-    if (evt.target === popupOverlay) {
-        closePopup();
+    if (evt.target === overlayCard) {
+        closePopup(overlayCard);
+    }
+
+    if (evt.target.classList.contains('close-btn')) {
+        closePopup(overlayCard);
     }
 
     if(evt.target === submitButton){
