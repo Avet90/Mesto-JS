@@ -1,16 +1,18 @@
 import './styles/index.css';
 
 const content = document.querySelector('.content');
+const profileSection = content.querySelector('.profile');
 const elementsContainer = content.querySelector('.elements-container');
 
 const addButton = content.querySelector('.profile__add-element-button');
+const editProfileButton = content.querySelector('.profile__edit-button');
 
-const overlayCard = content.querySelector('#popupOverlayCard');
-const submitButton = overlayCard.querySelector('.submit-btn');
+const popupProfile = content.querySelector('#popupProfile');
+
+const popupCard = content.querySelector('#popupCard');
+const submitButton = popupCard.querySelector('.submit-btn');
 
 const overlayImage = content.querySelector('#popupOverlayImage');
-
-const closeButton = content.querySelector('.close-btn');
 
 // Functions
 
@@ -76,15 +78,15 @@ function createCard(linkPicture, namePicture) {
 
 
 function addCard() {
-    const namePicture = overlayCard.querySelector('.placeName');
-    const linkPicture = overlayCard.querySelector('.imageUrl');
+    const namePicture = popupCard.querySelector('.placeName');
+    const linkPicture = popupCard.querySelector('.imageUrl');
 
     createCard(linkPicture.value, namePicture.value);
 
     linkPicture.value = ''; 
     namePicture.value = '';
 
-    closePopup(overlayCard);
+    closePopup(popupCard);
 }
 
 
@@ -93,18 +95,37 @@ function addCard() {
 
 // EventListeners
 
-addButton.addEventListener('click', () => openPopup(overlayCard))
+profileSection.addEventListener('click', function (evt) {
+    if(evt.target === addButton){
+        openPopup(popupCard);
+    }
 
-// closeButton.addEventListener('click', () => closePopup())
+    if(evt.target === editProfileButton){
+        openPopup(popupProfile);
+    }
+})
 
-overlayCard.addEventListener('click', function (evt) {
+popupProfile.addEventListener('click', function (evt) {
 
-    if (evt.target === overlayCard) {
-        closePopup(overlayCard);
+    if (evt.target === popupProfile) {
+        closePopup(popupProfile);
     }
 
     if (evt.target.classList.contains('close-btn')) {
-        closePopup(overlayCard);
+        closePopup(popupProfile);
+    }
+
+})
+
+
+popupCard.addEventListener('click', function (evt) {
+
+    if (evt.target === popupCard) {
+        closePopup(popupCard);
+    }
+
+    if (evt.target.classList.contains('close-btn')) {
+        closePopup(popupCard);
     }
 
     if(evt.target === submitButton){
