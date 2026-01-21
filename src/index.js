@@ -89,45 +89,59 @@ function addCard() {
     closePopup(popupCard);
 }
 
+function keyHandler(evt) {
+    if (evt.key === 'Escape') {
+        closePopup(popupCard);
+        closePopup(popupProfile);
+    }
+
+    // if (evt.key === 'Enter') {
+    //     closePopup(popupElement);
+    // }
+    
+}
+
+function handlerPopupClose(evt, popupElement) {
+    if (evt.target === popupElement || evt.target.classList.contains('close-btn')) {
+        closePopup(popupElement);
+    }
+}
+
+function handlerPopupOpen(evt){
+       
+    if(evt.target === addButton){
+        openPopup(popupCard);
+    }
+
+        
+    if(evt.target === editProfileButton){
+        openPopup(popupProfile);
+    }
+
+}
+
+
 
 
 
 
 // EventListeners
 
-profileSection.addEventListener('click', function (evt) {
-    if(evt.target === addButton){
-        openPopup(popupCard);
-    }
+content.addEventListener('keydown', (evt)=>{
+    keyHandler(evt);
+})
 
-    if(evt.target === editProfileButton){
-        openPopup(popupProfile);
-    }
+profileSection.addEventListener('click', function (evt) {
+    handlerPopupOpen(evt)
 })
 
 popupProfile.addEventListener('click', function (evt) {
-
-    if (evt.target === popupProfile) {
-        closePopup(popupProfile);
-    }
-
-    if (evt.target.classList.contains('close-btn')) {
-        closePopup(popupProfile);
-    }
-
+    handlerPopupClose(evt, popupProfile)
 })
 
 
 popupCard.addEventListener('click', function (evt) {
-
-    if (evt.target === popupCard) {
-        closePopup(popupCard);
-    }
-
-    if (evt.target.classList.contains('close-btn')) {
-        closePopup(popupCard);
-    }
-
+    handlerPopupClose(evt, popupCard);
     if(evt.target === submitButton){
         addCard();
     }
