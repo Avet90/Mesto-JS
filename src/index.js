@@ -4,15 +4,19 @@ const content = document.querySelector('.content');
 const profileSection = content.querySelector('.profile');
 const elementsContainer = content.querySelector('.elements-container');
 
+// Buttons
 const addButton = content.querySelector('.profile__add-element-button');
 const editProfileButton = content.querySelector('.profile__edit-button');
 
+// Popups
 const popupProfile = content.querySelector('#popupProfile');
-
 const popupCard = content.querySelector('#popupCard');
-const submitButton = popupCard.querySelector('.submit-btn');
+const popupPicture = content.querySelector('#popupPicture');
 
-const overlayImage = content.querySelector('#popupOverlayImage');
+// Forms
+const formElement = content.querySelector('#formProfile');
+const formCard = content.querySelector('#formCard')
+
 
 // Functions
 
@@ -33,21 +37,11 @@ function passOverlayFromCard(card) {
     const namePicture = card.querySelector('.element__title').textContent;
     const linkPicture = card.querySelector('.element__image').src;
     
-    overlayImage.querySelector('.image-caption').textContent = namePicture;
-    overlayImage.querySelector('.popup-image').src = linkPicture;
-    overlayImage.querySelector('.popup-image').alt = namePicture;
-
-    overlayImage.addEventListener('click', function (evt) {
-        if (evt.target === overlayImage) {
-        closePopup(overlayImage);
-        }
-
-        if (evt.target.classList.contains('close-btn')) {
-        closePopup(overlayImage);
-    }
-    })
+    popupPicture.querySelector('.image-caption').textContent = namePicture;
+    popupPicture.querySelector('.popup-image').src = linkPicture;
+    popupPicture.querySelector('.popup-image').alt = namePicture;
     
-    openPopup(overlayImage);
+    openPopup(popupPicture);
 }
 
 function createCard(linkPicture, namePicture) {
@@ -77,7 +71,8 @@ function createCard(linkPicture, namePicture) {
 }
 
 
-function addCard() {
+function addCard(evt) {
+    evt.preventDefault();
     const namePicture = popupCard.querySelector('.placeName');
     const linkPicture = popupCard.querySelector('.imageUrl');
 
@@ -86,19 +81,43 @@ function addCard() {
     linkPicture.value = ''; 
     namePicture.value = '';
 
-    closePopup(popupCard);
 }
 
-function keyHandler(evt) {
-    if (evt.key === 'Escape') {
-        closePopup(popupCard);
-        closePopup(popupProfile);
+
+function editProfile(evt){
+    evt.preventDefault();
+
+    const name = formElement.querySelector('.input-name').value;
+    const job = formElement.querySelector('.input-job').value;
+
+    profileSection.querySelector('.profile__name').textContent = name;
+    profileSection.querySelector('.profile__description').textContent = job;
+
+}
+
+
+
+
+function profileForm() {
+
+    formElement.querySelector('.input-name').value = profileSection.querySelector('.profile__name').textContent;
+    formElement.querySelector('.input-job').value = profileSection.querySelector('.profile__description').textContent;
+
+}
+
+// Hendlers
+
+function handlerPopupOpen(evt){
+       
+    if(evt.target === addButton){
+        openPopup(popupCard);
+    }
+        
+    if(evt.target === editProfileButton){
+        openPopup(popupProfile);
+        profileForm();
     }
 
-    // if (evt.key === 'Enter') {
-    //     closePopup(popupElement);
-    // }
-    
 }
 
 function handlerPopupClose(evt, popupElement) {
@@ -107,44 +126,55 @@ function handlerPopupClose(evt, popupElement) {
     }
 }
 
-function handlerPopupOpen(evt){
-       
-    if(evt.target === addButton){
-        openPopup(popupCard);
+function handlerKey(evt) {
+    if (evt.key === 'Escape') {
+        closePopup(popupCard);
+        closePopup(popupProfile);
+        closePopup(popupPicture);
     }
 
-        
-    if(evt.target === editProfileButton){
-        openPopup(popupProfile);
+    if (evt.key === 'Enter'){
+        if (evt.target === popupProfile) {
+            editProfile(evt)
+        }
+        if (evt.target === popupCard) {
+            addCard();
+        }
     }
-
 }
-
-
-
-
 
 
 // EventListeners
 
 content.addEventListener('keydown', (evt)=>{
-    keyHandler(evt);
+    handlerKey(evt);
 })
 
 profileSection.addEventListener('click', function (evt) {
     handlerPopupOpen(evt)
 })
 
-popupProfile.addEventListener('click', function (evt) {
-    handlerPopupClose(evt, popupProfile)
+popupPicture.addEventListener('click', function (evt) {
+    handlerPopupClose(evt, popupPicture);
 })
 
 
+formElement.addEventListener('submit', (evt) => {
+    editProfile(evt);
+    closePopup(popupProfile);
+}); 
+
+popupProfile.addEventListener('click', function (evt) {
+    handlerPopupClose(evt, popupProfile);
+})
+
+
+formCard.addEventListener('submit', (evt) => {
+    addCard(evt);
+    closePopup(popupCard);
+}); 
 popupCard.addEventListener('click', function (evt) {
     handlerPopupClose(evt, popupCard);
-    if(evt.target === submitButton){
-        addCard();
-    }
 })
 
 
