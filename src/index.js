@@ -28,12 +28,14 @@ function closePopup(overlay) {
     overlay.classList.remove('active');
 }
 
-function deleteCard(cardElement) {
+function deleteCard(evt) {
+    const cardElement = evt.target.closest('.element'); 
     cardElement.remove();
 }
 
-function passOverlayFromCard(card) {
+function openPicture(evt) {
 
+    const card = evt.target.closest('.element');
     const namePicture = card.querySelector('.element__title').textContent;
     const linkPicture = card.querySelector('.element__image').src;
     
@@ -44,7 +46,12 @@ function passOverlayFromCard(card) {
     openPopup(popupPicture);
 }
 
-function createCard(linkPicture, namePicture) {
+function toggleLike(evt) {
+    const likeElement = evt.target;
+    likeElement.classList.toggle('element__like_active');
+}
+
+function createCard(linkPicture, namePicture, handlerCardElement) {
     const cardTemplate = document.querySelector('#element-template');
     const cardElement = cardTemplate.content.querySelector('.element').cloneNode(true);
 
@@ -52,19 +59,11 @@ function createCard(linkPicture, namePicture) {
     cardElement.querySelector('.element__title').textContent = namePicture;
     cardElement.querySelector('.element__image').src = linkPicture;
     cardElement.querySelector('.element__image').alt = namePicture;
+    
+    cardElement
 
-
-    cardElement.querySelector('.element__like').addEventListener('click', function(evt){
-        const likeElement = evt.target;
-        likeElement.classList.toggle('element__like_active');
-    })
-
-    cardElement.querySelector('.element__trash').addEventListener('click', function(evt){
-        deleteCard(cardElement);
-    })
-
-    cardElement.querySelector('.element__image').addEventListener('click', function(evt){
-        passOverlayFromCard(cardElement)
+    cardElement.addEventListener('click', function(evt){
+       handlerCardElement(evt);
     })
 
     elementsContainer.append(cardElement);
@@ -76,7 +75,7 @@ function addCard(evt) {
     const namePicture = popupCard.querySelector('.placeName');
     const linkPicture = popupCard.querySelector('.imageUrl');
 
-    createCard(linkPicture.value, namePicture.value);
+    createCard(linkPicture.value, namePicture.value, handlerCardElement);
 
     linkPicture.value = ''; 
     namePicture.value = '';
@@ -98,7 +97,7 @@ function editProfile(evt){
 
 
 
-function profileForm() {
+function setInputValue() {
 
     formElement.querySelector('.input-name').value = profileSection.querySelector('.profile__name').textContent;
     formElement.querySelector('.input-job').value = profileSection.querySelector('.profile__description').textContent;
@@ -106,6 +105,24 @@ function profileForm() {
 }
 
 // Hendlers
+
+
+function handlerCardElement(evt) {
+    
+    const elLike = document.querySelector('.element__like');
+    const elTrash = document.querySelector('.element__trash');
+    const elImage = document.querySelector('.element__image');
+
+    if (evt.target.closest('.element__like')) {
+        toggleLike(evt);
+    }
+    if (evt.target.closest('.element__trash')) {
+        deleteCard(evt);
+    }
+    if (evt.target.closest('.element__image')) {
+        openPicture(evt)
+    }
+}
 
 function handlerPopupOpen(evt){
        
@@ -115,7 +132,7 @@ function handlerPopupOpen(evt){
         
     if(evt.target === editProfileButton){
         openPopup(popupProfile);
-        profileForm();
+        setInputValue();
     }
 
 }
@@ -130,7 +147,6 @@ function handlerKey(evt) {
     if (evt.key === 'Escape') {
         closePopup(popupCard);
         closePopup(popupProfile);
-        closePopup(popupPicture);
     }
 
     if (evt.key === 'Enter'){
