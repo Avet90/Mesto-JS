@@ -20,12 +20,17 @@ const formCard = content.querySelector('#formCard')
 
 // Functions
 
-function openPopup(overlay) {
-    overlay.classList.add('active');
+function openPopup(popup) {
+    popup.classList.add('active');
+    popup.addEventListener('keydown', (evt) => handlerKeyClose(evt, popup));
+    popup.addEventListener('click', function (evt) {
+    handlerPopupClose(evt, popup);
+})
 }
 
-function closePopup(overlay) {
-    overlay.classList.remove('active');
+function closePopup(popup) {
+    popup.classList.remove('active');
+    popup.removeEventListener('keydown', (evt) => handlerKeyClose(evt, popup));
 }
 
 function deleteCard(evt) {
@@ -92,6 +97,8 @@ function editProfile(evt){
     profileSection.querySelector('.profile__name').textContent = name;
     profileSection.querySelector('.profile__description').textContent = job;
 
+
+
 }
 
 
@@ -108,10 +115,6 @@ function setInputValue() {
 
 
 function handlerCardElement(evt) {
-    
-    const elLike = document.querySelector('.element__like');
-    const elTrash = document.querySelector('.element__trash');
-    const elImage = document.querySelector('.element__image');
 
     if (evt.target.closest('.element__like')) {
         toggleLike(evt);
@@ -134,7 +137,6 @@ function handlerPopupOpen(evt){
         openPopup(popupProfile);
         setInputValue();
     }
-
 }
 
 function handlerPopupClose(evt, popupElement) {
@@ -143,12 +145,14 @@ function handlerPopupClose(evt, popupElement) {
     }
 }
 
-function handlerKey(evt) {
+function handlerKeyClose(evt, popup) {
     if (evt.key === 'Escape') {
-        closePopup(popupCard);
-        closePopup(popupProfile);
+        closePopup(popup);
     }
+}
 
+
+function handlerKeyOpen(evt) {
     if (evt.key === 'Enter'){
         if (evt.target === popupProfile) {
             editProfile(evt)
@@ -163,35 +167,23 @@ function handlerKey(evt) {
 // EventListeners
 
 content.addEventListener('keydown', (evt)=>{
-    handlerKey(evt);
+    handlerKeyOpen(evt);
 })
 
 profileSection.addEventListener('click', function (evt) {
     handlerPopupOpen(evt)
 })
 
-popupPicture.addEventListener('click', function (evt) {
-    handlerPopupClose(evt, popupPicture);
-})
-
-
 formElement.addEventListener('submit', (evt) => {
     editProfile(evt);
     closePopup(popupProfile);
 }); 
 
-popupProfile.addEventListener('click', function (evt) {
-    handlerPopupClose(evt, popupProfile);
-})
-
-
 formCard.addEventListener('submit', (evt) => {
     addCard(evt);
     closePopup(popupCard);
 }); 
-popupCard.addEventListener('click', function (evt) {
-    handlerPopupClose(evt, popupCard);
-})
+
 
 
 
