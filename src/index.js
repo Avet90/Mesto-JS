@@ -19,60 +19,10 @@ const formCard = content.querySelector('#formCard')
 
 // Imports
 import {createCard} from './components/cards.js';
+import {openPopup, closePopup} from './components/modal.js';
 
 
 // Functions
-
-export function openPopup(popup) {
-    popup.classList.add('active');
-    document.addEventListener('keydown', (evt) => handlerKeyClose(evt, popup));
-    popup.addEventListener('click', (evt) => handlerPopupClose(evt, popup));
-}
-
-function closePopup(popup) {
-    popup.classList.remove('active');
-    document.removeEventListener('keydown', (evt) => handlerKeyClose(evt, popup));
-    popup.removeEventListener('click', (evt) => handlerPopupClose(evt, popup));
-}
-
-
-
-// function openPicture(evt) {
-
-//     const card = evt.target.closest('.element');
-//     const namePicture = card.querySelector('.element__title').textContent;
-//     const linkPicture = card.querySelector('.element__image').src;
-    
-//     popupPicture.querySelector('.image-caption').textContent = namePicture;
-//     popupPicture.querySelector('.popup-image').src = linkPicture;
-//     popupPicture.querySelector('.popup-image').alt = namePicture;
-    
-//     openPopup(popupPicture);
-// }
-
-// function toggleLike(evt) {
-//     const likeElement = evt.target;
-//     likeElement.classList.toggle('element__like_active');
-// }
-
-// function createCard(linkPicture, namePicture, handlerCardElement) {
-//     const cardTemplate = document.querySelector('#element-template');
-//     const cardElement = cardTemplate.content.querySelector('.element').cloneNode(true);
-
-
-//     cardElement.querySelector('.element__title').textContent = namePicture;
-//     cardElement.querySelector('.element__image').src = linkPicture;
-//     cardElement.querySelector('.element__image').alt = namePicture;
-    
-//     cardElement
-
-//     cardElement.addEventListener('click', function(evt){
-//        handlerCardElement(evt);
-//     })
-
-//     elementsContainer.append(cardElement);
-// }
-
 
 function addCard(evt) {
     evt.preventDefault();
@@ -96,8 +46,6 @@ function editProfile(evt){
     profileSection.querySelector('.profile__name').textContent = name;
     profileSection.querySelector('.profile__description').textContent = job;
 
-
-
 }
 
 
@@ -111,19 +59,6 @@ function setInputValue() {
 // Hendlers
 
 
-// function handlerCardElement(evt) {
-
-//     if (evt.target.closest('.element__like')) {
-//         toggleLike(evt);
-//     }
-//     if (evt.target.closest('.element__trash')) {
-//         deleteCard(evt);
-//     }
-//     if (evt.target.closest('.element__image')) {
-//         openPicture(evt)
-//     }
-// }
-
 function handlerPopupOpen(evt){
        
     if(evt.target === addButton){
@@ -135,19 +70,6 @@ function handlerPopupOpen(evt){
         setInputValue();
     }
 }
-
-function handlerPopupClose(evt, popupElement) {
-    if (evt.target === popupElement || evt.target.classList.contains('close-btn')) {
-        closePopup(popupElement);
-    }
-}
-
-function handlerKeyClose(evt, popup) {
-    if (evt.key === 'Escape') {
-        closePopup(popup);
-    }
-}
-
 
 function handlerKeyOpen(evt) {
     if (evt.key === 'Enter'){

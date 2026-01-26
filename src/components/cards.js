@@ -1,7 +1,4 @@
-
-import {openPopup} from '../index.js';
-
-
+import {openPopup} from './modal.js';
 
 
 function openPicture(evt, popupPicture) {
@@ -16,7 +13,6 @@ function openPicture(evt, popupPicture) {
     
     openPopup(popupPicture);
 }
-
 
 function deleteCard(evt) {
     const cardElement = evt.target.closest('.element'); 
@@ -45,9 +41,6 @@ export function createCard(linkPicture, namePicture, popupPicture, elementsConta
 
     elementsContainer.append(cardElement);
 }
-
-
-
 
 function handlerCardElement(evt, popupPicture) {
 
