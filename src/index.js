@@ -1,116 +1,105 @@
 import './styles/index.css';
 
 const content = document.querySelector('.content');
+const profileSection = content.querySelector('.profile');
 const elementsContainer = content.querySelector('.elements-container');
 
+// Buttons
 const addButton = content.querySelector('.profile__add-element-button');
+const editProfileButton = content.querySelector('.profile__edit-button');
 
-const overlayCard = content.querySelector('#popupOverlayCard');
-const submitButton = overlayCard.querySelector('.submit-btn');
+// Popups
+const popupProfile = content.querySelector('#popupProfile');
+const popupCard = content.querySelector('#popupCard');
+const popupPicture = content.querySelector('#popupPicture');
 
-const overlayImage = content.querySelector('#popupOverlayImage');
+// Forms
+const formElement = content.querySelector('#formProfile');
+const formCard = content.querySelector('#formCard')
 
-const closeButton = content.querySelector('.close-btn');
+// Imports
+import {createCard} from './components/cards.js';
+import {openPopup, closePopup} from './components/modal.js';
+
 
 // Functions
 
-function openPopup(overlay) {
-    overlay.classList.add('active');
-}
+function addCard(evt) {
+    evt.preventDefault();
+    const namePicture = popupCard.querySelector('.placeName');
+    const linkPicture = popupCard.querySelector('.imageUrl');
 
-function closePopup(overlay) {
-    overlay.classList.remove('active');
-}
-
-function deleteCard(cardElement) {
-    cardElement.remove();
-}
-
-function passOverlayFromCard(card) {
-
-    const namePicture = card.querySelector('.element__title').textContent;
-    const linkPicture = card.querySelector('.element__image').src;
-    
-    overlayImage.querySelector('.image-caption').textContent = namePicture;
-    overlayImage.querySelector('.popup-image').src = linkPicture;
-    overlayImage.querySelector('.popup-image').alt = namePicture;
-
-    overlayImage.addEventListener('click', function (evt) {
-        if (evt.target === overlayImage) {
-        closePopup(overlayImage);
-        }
-
-        if (evt.target.classList.contains('close-btn')) {
-        closePopup(overlayImage);
-    }
-    })
-    
-    openPopup(overlayImage);
-}
-
-function createCard(linkPicture, namePicture) {
-    const cardTemplate = document.querySelector('#element-template');
-    const cardElement = cardTemplate.content.querySelector('.element').cloneNode(true);
-
-
-    cardElement.querySelector('.element__title').textContent = namePicture;
-    cardElement.querySelector('.element__image').src = linkPicture;
-    cardElement.querySelector('.element__image').alt = namePicture;
-
-
-    cardElement.querySelector('.element__like').addEventListener('click', function(evt){
-        const likeElement = evt.target;
-        likeElement.classList.toggle('element__like_active');
-    })
-
-    cardElement.querySelector('.element__trash').addEventListener('click', function(evt){
-        deleteCard(cardElement);
-    })
-
-    cardElement.querySelector('.element__image').addEventListener('click', function(evt){
-        passOverlayFromCard(cardElement)
-    })
-
-    elementsContainer.append(cardElement);
-}
-
-
-function addCard() {
-    const namePicture = overlayCard.querySelector('.placeName');
-    const linkPicture = overlayCard.querySelector('.imageUrl');
-
-    createCard(linkPicture.value, namePicture.value);
+    createCard(linkPicture.value, namePicture.value, popupPicture, elementsContainer);
 
     linkPicture.value = ''; 
     namePicture.value = '';
 
-    closePopup(overlayCard);
 }
 
 
+function editProfile(evt){
+    evt.preventDefault();
 
+    const name = formElement.querySelector('.input-name').value;
+    const job = formElement.querySelector('.input-job').value;
+
+    profileSection.querySelector('.profile__name').textContent = name;
+    profileSection.querySelector('.profile__description').textContent = job;
+
+}
+
+
+function setInputValue() {
+
+    formElement.querySelector('.input-name').value = profileSection.querySelector('.profile__name').textContent;
+    formElement.querySelector('.input-job').value = profileSection.querySelector('.profile__description').textContent;
+
+}
+
+// Hendlers
+
+
+function handlerPopupOpen(evt){
+       
+    if(evt.target === addButton){
+        openPopup(popupCard);
+    }
+        
+    if(evt.target === editProfileButton){
+        openPopup(popupProfile);
+        setInputValue();
+    }
+}
+
+function handlerKeyOpen(evt) {
+    if (evt.key === 'Enter'){
+        if (evt.target === popupProfile) {
+            editProfile(evt)
+        }
+        if (evt.target === popupCard) {
+            addCard();
+        }
+    }
+}
 
 
 // EventListeners
 
-addButton.addEventListener('click', () => openPopup(overlayCard))
-
-// closeButton.addEventListener('click', () => closePopup())
-
-overlayCard.addEventListener('click', function (evt) {
-
-    if (evt.target === overlayCard) {
-        closePopup(overlayCard);
-    }
-
-    if (evt.target.classList.contains('close-btn')) {
-        closePopup(overlayCard);
-    }
-
-    if(evt.target === submitButton){
-        addCard();
-    }
+content.addEventListener('keydown', (evt)=>{
+    handlerKeyOpen(evt);
 })
 
+profileSection.addEventListener('click', function (evt) {
+    handlerPopupOpen(evt);
+})
 
+formElement.addEventListener('submit', (evt) => {
+    editProfile(evt);
+    closePopup(popupProfile);
+}); 
+
+formCard.addEventListener('submit', (evt) => {
+    addCard(evt);
+    closePopup(popupCard);
+}); 
 
