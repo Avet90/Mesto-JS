@@ -1,3 +1,4 @@
+
 export function openPopup(popup) {
     popup.classList.add('active');
     document.addEventListener('keydown', (evt) => handlerKeyClose(evt, popup));
@@ -6,6 +7,7 @@ export function openPopup(popup) {
 
 export function closePopup(popup) {
     popup.classList.remove('active');
+    popup.querySelector('.form').reset();
     document.removeEventListener('keydown', (evt) => handlerKeyClose(evt, popup));
     popup.removeEventListener('click', (evt) => handlerPopupClose(evt, popup));
 }

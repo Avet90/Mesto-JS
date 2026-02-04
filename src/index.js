@@ -20,7 +20,17 @@ const formCard = content.querySelector('#formCard')
 // Imports
 import {createCard} from './components/cards.js';
 import {openPopup, closePopup} from './components/modal.js';
-import {enableValidation} from './components/validation.js'
+import {enableValidation, clearValidation} from './components/validation.js'
+
+
+const validationConfig = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'button_inactive',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__input-error_active'
+};
 
 
 // Functions
@@ -54,7 +64,6 @@ function setInputValue() {
 
     formElement.querySelector('.profile-name-input').value = profileSection.querySelector('.profile__name').textContent;
     formElement.querySelector('.profile-description-input').value = profileSection.querySelector('.profile__description').textContent;
-    enableValidation();
 
 }
 
@@ -65,13 +74,17 @@ function setInputValue() {
 function handlerPopupOpen(evt){
        
     if(evt.target === addButton){
+        clearValidation(formCard, validationConfig);
         openPopup(popupCard);
-        enableValidation();
+        enableValidation(validationConfig);
+
     }
         
     if(evt.target === editProfileButton){
+        clearValidation(formElement, validationConfig);
         openPopup(popupProfile);
         setInputValue();
+        enableValidation(validationConfig);
     }
 }
 
