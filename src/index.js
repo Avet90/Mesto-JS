@@ -20,14 +20,25 @@ const formCard = content.querySelector('#formCard')
 // Imports
 import {createCard} from './components/cards.js';
 import {openPopup, closePopup} from './components/modal.js';
+import {enableValidation, clearValidation} from './components/validation.js'
+
+
+const validationConfig = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'button_inactive',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__input-error_active'
+};
 
 
 // Functions
 
 function addCard(evt) {
     evt.preventDefault();
-    const namePicture = popupCard.querySelector('.placeName');
-    const linkPicture = popupCard.querySelector('.imageUrl');
+    const namePicture = popupCard.querySelector('.place-name-input');
+    const linkPicture = popupCard.querySelector('.image-url-input');
 
     createCard(linkPicture.value, namePicture.value, popupPicture, elementsContainer);
 
@@ -40,8 +51,8 @@ function addCard(evt) {
 function editProfile(evt){
     evt.preventDefault();
 
-    const name = formElement.querySelector('.input-name').value;
-    const job = formElement.querySelector('.input-job').value;
+    const name = formElement.querySelector('.profile-name-input').value;
+    const job = formElement.querySelector('.profile-description-input').value;
 
     profileSection.querySelector('.profile__name').textContent = name;
     profileSection.querySelector('.profile__description').textContent = job;
@@ -51,10 +62,11 @@ function editProfile(evt){
 
 function setInputValue() {
 
-    formElement.querySelector('.input-name').value = profileSection.querySelector('.profile__name').textContent;
-    formElement.querySelector('.input-job').value = profileSection.querySelector('.profile__description').textContent;
+    formElement.querySelector('.profile-name-input').value = profileSection.querySelector('.profile__name').textContent;
+    formElement.querySelector('.profile-description-input').value = profileSection.querySelector('.profile__description').textContent;
 
 }
+
 
 // Hendlers
 
@@ -62,12 +74,17 @@ function setInputValue() {
 function handlerPopupOpen(evt){
        
     if(evt.target === addButton){
+        clearValidation(formCard, validationConfig);
         openPopup(popupCard);
+        enableValidation(validationConfig);
+
     }
         
     if(evt.target === editProfileButton){
+        clearValidation(formElement, validationConfig);
         openPopup(popupProfile);
         setInputValue();
+        enableValidation(validationConfig);
     }
 }
 
@@ -86,20 +103,20 @@ function handlerKeyOpen(evt) {
 // EventListeners
 
 content.addEventListener('keydown', (evt)=>{
-    handlerKeyOpen(evt);
+  handlerKeyOpen(evt);
 })
 
 profileSection.addEventListener('click', function (evt) {
-    handlerPopupOpen(evt);
+  handlerPopupOpen(evt);
 })
 
 formElement.addEventListener('submit', (evt) => {
-    editProfile(evt);
-    closePopup(popupProfile);
+  editProfile(evt);
+  closePopup(popupProfile);
 }); 
 
 formCard.addEventListener('submit', (evt) => {
-    addCard(evt);
-    closePopup(popupCard);
+  addCard(evt);
+  closePopup(popupCard);
 }); 
 
