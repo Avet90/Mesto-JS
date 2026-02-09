@@ -21,6 +21,7 @@ const formCard = content.querySelector('#formCard')
 import {createCard} from './components/cards.js';
 import {openPopup, closePopup} from './components/modal.js';
 import {enableValidation, clearValidation} from './components/validation.js'
+import {getInitialCards, getInitialUser} from "./components/api.js";
 
 
 const validationConfig = {
@@ -32,15 +33,34 @@ const validationConfig = {
   errorClass: 'form__input-error_active'
 };
 
+getInitialCards()
+.then((result) => {
+    result.forEach(element => {
+        createCard(element.link, element.name, popupPicture, elementsContainer);
+    });
+})
+.catch(err => console.log(`Ошибка: ${err}`)) 
+
+
+
+getInitialUser()
+.then(res => getApiUser(res))
+.catch(err => console.log(`Ошибка: ${err}`))
 
 // Functions
 
-function addCard(evt) {
-    evt.preventDefault();
-    const namePicture = popupCard.querySelector('.place-name-input');
-    const linkPicture = popupCard.querySelector('.image-url-input');
+export function getApiUser(res) {
+  document.querySelector('.profile__description').textContent = res.about;
+  document.querySelector('.profile__avatar').textContent = res.avatar;
+  document.querySelector('.profile__name').textContent = res.name;
+}
 
-    createCard(linkPicture.value, namePicture.value, popupPicture, elementsContainer);
+function addCard(evt) {
+  evt.preventDefault();
+  const namePicture = popupCard.querySelector('.place-name-input');
+  const linkPicture = popupCard.querySelector('.image-url-input');
+
+  createCard(linkPicture.value, namePicture.value, popupPicture, elementsContainer);
 
     linkPicture.value = ''; 
     namePicture.value = '';
@@ -49,13 +69,13 @@ function addCard(evt) {
 
 
 function editProfile(evt){
-    evt.preventDefault();
+  evt.preventDefault();
 
-    const name = formElement.querySelector('.profile-name-input').value;
-    const job = formElement.querySelector('.profile-description-input').value;
+  const name = formElement.querySelector('.profile-name-input').value;
+  const job = formElement.querySelector('.profile-description-input').value;
 
-    profileSection.querySelector('.profile__name').textContent = name;
-    profileSection.querySelector('.profile__description').textContent = job;
+  profileSection.querySelector('.profile__name').textContent = name;
+  profileSection.querySelector('.profile__description').textContent = job;
 
 }
 
