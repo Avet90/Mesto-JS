@@ -21,7 +21,7 @@ const formCard = content.querySelector('#formCard')
 import {createCard} from './components/cards.js';
 import {openPopup, closePopup} from './components/modal.js';
 import {enableValidation, clearValidation} from './components/validation.js'
-import {getInitialCards, getInitialUser} from "./components/api.js";
+import {getInitialCards, getInitialUser, patchUser, postCard} from "./components/api.js";
 
 
 const validationConfig = {
@@ -33,38 +33,43 @@ const validationConfig = {
   errorClass: 'form__input-error_active'
 };
 
-getInitialCards()
-.then((result) => {
-    result.forEach(element => {
-        createCard(element.link, element.name, popupPicture, elementsContainer);
+// Fetch Functions
+
+Promise.all([getInitialUser(), getInitialCards()])
+.then(([user, cards])=>{
+  getApiUser(user);
+  cards.forEach(card => {
+        createCard(card, popupPicture, elementsContainer);
     });
 })
-.catch(err => console.log(`Ошибка: ${err}`)) 
-
-
-
-getInitialUser()
-.then(res => getApiUser(res))
 .catch(err => console.log(`Ошибка: ${err}`))
+
 
 // Functions
 
-export function getApiUser(res) {
-  document.querySelector('.profile__description').textContent = res.about;
-  document.querySelector('.profile__avatar').textContent = res.avatar;
-  document.querySelector('.profile__name').textContent = res.name;
+export function getApiUser(user) {
+  document.querySelector('.profile__description').textContent = user.about;
+  document.querySelector('.profile__avatar').src = user.avatar;
+  document.querySelector('.profile__name').textContent = user.name;
 }
 
 function addCard(evt) {
   evt.preventDefault();
-  const namePicture = popupCard.querySelector('.place-name-input');
-  const linkPicture = popupCard.querySelector('.image-url-input');
 
-  createCard(linkPicture.value, namePicture.value, popupPicture, elementsContainer);
+  const card = {};
+  card.name = popupCard.querySelector('.place-name-input').value;
+  card.link = popupCard.querySelector('.image-url-input').value;
 
-    linkPicture.value = ''; 
-    namePicture.value = '';
-
+  postCard(card)
+  .then((card)=>{
+    createCard(card, popupPicture, elementsContainer);
+    closePopup(popupCard);
+  })
+  .catch(err => console.log(`Ошибка: ${err}`))
+  .finally(()=>{
+    popupCard.querySelector('.place-name-input').value = ''; 
+    popupCard.querySelector('.image-url-input').value = '';
+  })
 }
 
 
@@ -72,10 +77,14 @@ function editProfile(evt){
   evt.preventDefault();
 
   const name = formElement.querySelector('.profile-name-input').value;
-  const job = formElement.querySelector('.profile-description-input').value;
+  const about = formElement.querySelector('.profile-description-input').value;
 
-  profileSection.querySelector('.profile__name').textContent = name;
-  profileSection.querySelector('.profile__description').textContent = job;
+  patchUser(name, about)
+  .then((updateUser)=>{
+    getApiUser(updateUser);
+    closePopup(popupProfile);
+  })
+  .catch(err => console.log(`Ошибка: ${err}`))
 
 }
 
@@ -130,13 +139,7 @@ profileSection.addEventListener('click', function (evt) {
   handlerPopupOpen(evt);
 })
 
-formElement.addEventListener('submit', (evt) => {
-  editProfile(evt);
-  closePopup(popupProfile);
-}); 
+formElement.addEventListener('submit', editProfile); 
 
-formCard.addEventListener('submit', (evt) => {
-  addCard(evt);
-  closePopup(popupCard);
-}); 
+formCard.addEventListener('submit', addCard); 
 
