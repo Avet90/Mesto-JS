@@ -24,14 +24,15 @@ function toggleLike(evt) {
     likeElement.classList.toggle('element__like_active');
 }
 
-export function createCard(linkPicture, namePicture, popupPicture, elementsContainer) {
+export function createCard(card, popupPicture, elementsContainer) {
     const cardTemplate = document.querySelector('#element-template');
     const cardElement = cardTemplate.content.querySelector('.element').cloneNode(true);
 
 
-    cardElement.querySelector('.element__title').textContent = namePicture;
-    cardElement.querySelector('.element__image').src = linkPicture;
-    cardElement.querySelector('.element__image').alt = namePicture;
+    cardElement.querySelector('.element__title').textContent = card.name;
+    cardElement.querySelector('.element__image').src = card.link;
+    cardElement.querySelector('.element__image').alt = card.name;
+    cardElement.querySelector('.element__likes-quantity').textContent = card.likes.length;
     
     cardElement
 

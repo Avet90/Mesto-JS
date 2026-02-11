@@ -18,6 +18,23 @@ export const getInitialCards = () => {
   })
 }
 
+export const postCard = (card) => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers,
+    method: 'POST',
+    body: JSON.stringify({
+      name: card.name,
+      link: card.link
+    })
+  })
+  .then((res)=> {
+    if(res.ok){
+      return res.json();
+    }
+    return Promise.reject(res.status);
+  })
+}
+
 export const getInitialUser = () =>{
     return fetch(`${config.baseUrl}/users/me`,{
         headers: config.headers
@@ -28,4 +45,21 @@ export const getInitialUser = () =>{
         }
         return Promise.reject(res.status);
     })
+}
+
+export const patchUser = (name, about) => {
+      return fetch(`${config.baseUrl}/users/me`,{
+        method: 'PATCH',
+        headers: config.headers,
+        body: JSON.stringify({
+          name: name,
+          about: about
+        })
+      })
+      .then((res)=> {
+        if(res.ok){
+         return res.json();
+        }
+        return Promise.reject(res.status);
+      })
 }
