@@ -63,3 +63,17 @@ export const patchUser = (name, about) => {
         return Promise.reject(res.status);
       })
 }
+
+export const deleteCardRequest = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`,{
+        method: 'DELETE',
+        headers: config.headers
+  })
+  .then((res)=> {
+        if(res.ok){
+         return res.json();
+        }
+        return Promise.reject(res.status);
+  })
+  
+}
