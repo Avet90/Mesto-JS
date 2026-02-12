@@ -396,6 +396,7 @@
 }
 
 .element__trash {
+  display: none;
   position: absolute;
   top: var(--spacing-lg);
   right: var(--spacing-lg);
@@ -412,6 +413,10 @@
 
 .element__trash:hover {
   opacity: 0.6;
+}
+
+.element__trash-active {
+  display: block;
 }
 
 .element__footer {
@@ -432,6 +437,12 @@
   white-space: nowrap;
   overflow: hidden;
   max-width: 190px;
+}
+
+.element__like-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .element__like {
@@ -457,6 +468,7 @@
 
 .element__likes-quantity {
   color: var(--color-black);
+  font-size: 13px;
 }
 
 /* Footer */
