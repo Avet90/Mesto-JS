@@ -38,7 +38,6 @@ const validationConfig = {
 Promise.all([getInitialUser(), getInitialCards()])
 .then(([user, cards])=>{
   getApiUser(user);
-  console.log(user);
   cards.forEach(card => {
         createCard(card, popupPicture, elementsContainer);
     });
@@ -107,7 +106,6 @@ function handlerPopupOpen(evt){
         clearValidation(formCard, validationConfig);
         openPopup(popupCard);
         enableValidation(validationConfig);
-
     }
         
     if(evt.target === editProfileButton){
