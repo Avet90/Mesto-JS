@@ -1,5 +1,5 @@
 import {openPopup} from './modal.js';
-import {deleteCardRequest} from './api.js'
+import {deleteCardRequest, putLikeRequest, deleteLikeRequest} from './api.js'
 
 
 function openPicture(evt, popupPicture) {
@@ -25,9 +25,19 @@ function deleteCard(evt, card) {
     .catch(err => console.log(`Ошибка: ${err}`))
 }
 
-function toggleLike(evt) {
+function toggleLike(evt, card) {
     const likeElement = evt.target;
-    likeElement.classList.toggle('element__like_active');
+    const isLiked = likeElement.classList.contains('element__like_active');
+    const likesCounter = likeElement.closest('.element').querySelector('.element__likes-quantity');
+
+    const request = isLiked ? deleteLikeRequest : putLikeRequest;
+
+    request(card._id)
+    .then((card)=>{
+            likeElement.classList.toggle('element__like_active');
+            likesCounter.textContent = card.likes.length;
+        })
+    .catch(err => console.log(`Ошибка: ${err}`))
 }
 
 
@@ -47,25 +57,19 @@ export function createCard(card, popupPicture, elementsContainer) {
     
     cardElement
 
-    cardElement.addEventListener('click', function(evt){
-       handlerCardElement(evt, popupPicture);
+    cardElement.querySelector('.element__image').addEventListener('click', function(evt){
+       openPicture(evt, popupPicture);
     })
 
     cardElement.querySelector('.element__trash').addEventListener('click', function(evt){
        deleteCard(evt, card);
     })
+    
+    cardElement.querySelector('.element__like').addEventListener('click', function(evt){
+       toggleLike(evt, card);
+    })
 
 
 
     elementsContainer.append(cardElement);
-}
-
-function handlerCardElement(evt, popupPicture) {
-
-    if (evt.target.closest('.element__like')) {
-        toggleLike(evt);
-    }
-    if (evt.target.closest('.element__image')) {
-        openPicture(evt, popupPicture)
-    }
 }

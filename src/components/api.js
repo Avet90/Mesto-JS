@@ -77,3 +77,31 @@ export const deleteCardRequest = (cardId) => {
   })
   
 }
+
+
+export const putLikeRequest = (cardId) => {
+      return fetch(`${config.baseUrl}/cards/likes/${cardId}`,{
+        method: 'PUT',
+        headers: config.headers,
+      })
+      .then((res)=> {
+        if(res.ok){
+         return res.json();
+        }
+        return Promise.reject(res.status);
+      })
+}
+
+export const deleteLikeRequest = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`,{
+        method: 'DELETE',
+        headers: config.headers
+  })
+  .then((res)=> {
+        if(res.ok){
+         return res.json();
+        }
+        return Promise.reject(res.status);
+  })
+  
+}
