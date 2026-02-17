@@ -85,7 +85,58 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: var(--spacing-xxl);
+}
+
+.profile__avatar-container {
+  position: relative; /* Нужно для позиционирования псевдо-элементов */
+  width: 120px; /* Задай размер своей аватарки */
+  height: 120px;
+  border-radius: 50%; /* Если аватарка круглая */
+  overflow: hidden; /* Чтобы карандаш и затемнение не выходили за круг */
+  cursor: pointer;
+}
+
+/* Затемнение и карандаш */
+.profile__avatar-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Полупрозрачное затемнение (притемнение) */
+  opacity: 0; /* Изначально скрыто */
+  transition: opacity 0.3s ease;
+  border-radius: 50%; /* Чтобы затемнение тоже было круглым */
+  z-index: 1; /* Чтобы было поверх картинки */
+}
+
+/* Иконка карандаша */
+.profile__avatar-container::after {
+  content: "✎";
+  background-image: url("../images/pencil.png");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центрирование */
+  color: white;
+  font-size: 30px; /* Размер карандаша */
+  font-weight: bold;
+  opacity: 0; /* Изначально скрыто */
+  transition: opacity 0.3s ease;
+  z-index: 2; /* Чтобы карандаш был поверх затемнения */
+  pointer-events: none; /* Чтобы карандаш не мешал кликать по контейнеру */
+}
+
+/* При наведении на контейнер показываем затемнение и карандаш */
+.profile__avatar-container:hover::before,
+.profile__avatar-container:hover::after {
+  opacity: 1;
 }
 
 .profile__info {
