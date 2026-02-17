@@ -64,6 +64,22 @@ export const patchUser = (name, about) => {
       })
 }
 
+export const patchAvatar = (avatar) => {
+      return fetch(`${config.baseUrl}/users/me/avatar`,{
+        method: 'PATCH',
+        headers: config.headers,
+        body: JSON.stringify({
+          avatar: avatar
+        })
+      })
+      .then((res)=> {
+        if(res.ok){
+         return res.json();
+        }
+        return Promise.reject(res.status);
+      })
+}
+
 export const deleteCardRequest = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`,{
         method: 'DELETE',
@@ -92,6 +108,7 @@ export const putLikeRequest = (cardId) => {
       })
 }
 
+
 export const deleteLikeRequest = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`,{
         method: 'DELETE',
@@ -105,3 +122,5 @@ export const deleteLikeRequest = (cardId) => {
   })
   
 }
+
+

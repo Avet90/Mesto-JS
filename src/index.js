@@ -3,6 +3,7 @@ import './styles/index.css';
 const content = document.querySelector('.content');
 const profileSection = content.querySelector('.profile');
 const elementsContainer = content.querySelector('.elements-container');
+const profileAvatarContainer = content.querySelector('.profile__avatar-container');
 
 // Buttons
 const addButton = content.querySelector('.profile__add-element-button');
@@ -12,16 +13,18 @@ const editProfileButton = content.querySelector('.profile__edit-button');
 const popupProfile = content.querySelector('#popupProfile');
 const popupCard = content.querySelector('#popupCard');
 const popupPicture = content.querySelector('#popupPicture');
+const popupProfAvatar = content.querySelector('#popupProfileAvatar');
 
 // Forms
 const formElement = content.querySelector('#formProfile');
 const formCard = content.querySelector('#formCard')
+const formProfAvatar = content.querySelector('#formProfileAvatar');
 
 // Imports
 import {createCard} from './components/cards.js';
 import {openPopup, closePopup} from './components/modal.js';
 import {enableValidation, clearValidation} from './components/validation.js'
-import {getInitialCards, getInitialUser, patchUser, postCard} from "./components/api.js";
+import {getInitialCards, getInitialUser, patchUser, postCard, patchAvatar} from "./components/api.js";
 
 
 const validationConfig = {
@@ -85,7 +88,6 @@ function editProfile(evt){
     closePopup(popupProfile);
   })
   .catch(err => console.log(`Ошибка: ${err}`))
-
 }
 
 
@@ -94,6 +96,19 @@ function setInputValue() {
     formElement.querySelector('.profile-name-input').value = profileSection.querySelector('.profile__name').textContent;
     formElement.querySelector('.profile-description-input').value = profileSection.querySelector('.profile__description').textContent;
 
+}
+
+function changeAvatar(evt){
+  evt.preventDefault();
+
+  const avatar = formProfAvatar.querySelector('.profile__avatar-url-input').value;
+
+  patchAvatar(avatar)
+  .then((updateUser)=>{
+    getApiUser(updateUser);
+    closePopup(popupProfAvatar);
+  })
+  .catch(err => console.log(`Ошибка: ${err}`))
 }
 
 
@@ -113,6 +128,13 @@ function handlerPopupOpen(evt){
         openPopup(popupProfile);
         setInputValue();
         enableValidation(validationConfig);
+    }
+
+    if (evt.target === profileAvatarContainer) {
+      console.log(evt.target);
+      openPopup(popupProfAvatar);
+      clearValidation(formProfAvatar, validationConfig);
+      enableValidation(validationConfig);
     }
 }
 
@@ -141,4 +163,6 @@ profileSection.addEventListener('click', function (evt) {
 formElement.addEventListener('submit', editProfile); 
 
 formCard.addEventListener('submit', addCard); 
+
+formProfAvatar.addEventListener('submit', changeAvatar);
 
