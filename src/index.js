@@ -15,6 +15,7 @@ const popupCard = content.querySelector('#popupCard');
 const popupPicture = content.querySelector('#popupPicture');
 const popupProfAvatar = content.querySelector('#popupProfileAvatar');
 
+
 // Forms
 const formElement = content.querySelector('#formProfile');
 const formCard = content.querySelector('#formCard')
@@ -58,6 +59,8 @@ export function getApiUser(user) {
 
 function addCard(evt) {
   evt.preventDefault();
+  setButtonSaving(popupCard);
+  /// функция изминения название кнопки
 
   const card = {};
   card.name = popupCard.querySelector('.place-name-input').value;
@@ -72,6 +75,7 @@ function addCard(evt) {
   .finally(()=>{
     popupCard.querySelector('.place-name-input').value = ''; 
     popupCard.querySelector('.image-url-input').value = '';
+    setButtonText(formElement);
   })
 }
 
@@ -79,8 +83,12 @@ function addCard(evt) {
 function editProfile(evt){
   evt.preventDefault();
 
+  setButtonSaving(formElement);
+  /// функция изминения название кнопки
+
   const name = formElement.querySelector('.profile-name-input').value;
   const about = formElement.querySelector('.profile-description-input').value;
+
 
   patchUser(name, about)
   .then((updateUser)=>{
@@ -88,6 +96,9 @@ function editProfile(evt){
     closePopup(popupProfile);
   })
   .catch(err => console.log(`Ошибка: ${err}`))
+  .finally(()=>{
+    setButtonText(formElement);
+  })
 }
 
 
@@ -101,6 +112,8 @@ function setInputValue() {
 function changeAvatar(evt){
   evt.preventDefault();
 
+  setButtonSaving(formProfAvatar);
+
   const avatar = formProfAvatar.querySelector('.profile__avatar-url-input').value;
 
   patchAvatar(avatar)
@@ -109,6 +122,25 @@ function changeAvatar(evt){
     closePopup(popupProfAvatar);
   })
   .catch(err => console.log(`Ошибка: ${err}`))
+  .finally(()=>{
+    setButtonText(formProfAvatar);
+  })
+}
+
+const setButtonSaving = (form)=>{
+  if (form === formCard) {
+    form.querySelector('.form__submit').textContent = 'Создание...';
+  }else{
+    form.querySelector('.form__submit').textContent = 'Сохранение...';
+  }
+}
+
+const setButtonText = (form)=>{
+  if(form === formCard){
+    form.querySelector('.form__submit').textContent = 'Создать';
+  }else{
+    form.querySelector('.form__submit').textContent = 'Сохранить';
+  }
 }
 
 
@@ -131,7 +163,6 @@ function handlerPopupOpen(evt){
     }
 
     if (evt.target === profileAvatarContainer) {
-      console.log(evt.target);
       openPopup(popupProfAvatar);
       clearValidation(formProfAvatar, validationConfig);
       enableValidation(validationConfig);
