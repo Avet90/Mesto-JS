@@ -1,4 +1,4 @@
-import {openPopup} from './modal.js';
+import {openPopup, closePopup} from './modal.js';
 import {deleteCardRequest, putLikeRequest, deleteLikeRequest} from './api.js'
 
 
@@ -15,14 +15,25 @@ function openPicture(evt, popupPicture) {
     openPopup(popupPicture);
 }
 
+function checkDelete() {
+    const popupCardDelete = document.querySelector('#popupCardDelete');
+    openPopup(popupCardDelete);
+}
+
 function deleteCard(evt, card) {
+    checkDelete();
     const cardElement = evt.target.closest('.element');
+    document.querySelector('.btn-card-delete').addEventListener('click', function () {
 
     deleteCardRequest(card._id)
     .then(()=>{
         cardElement.remove();
+        closePopup(popupCardDelete);
     })
     .catch(err => console.log(`Ошибка: ${err}`))
+
+
+    });
 }
 
 function toggleLike(evt, card) {
